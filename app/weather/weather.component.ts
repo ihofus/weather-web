@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
 import { WeatherService } from './weather.service';
 import { Chanel } from './chanel';
-import { Weather } from './weather';
+import { WeatherValue } from './weather-value';
 @Component({
   selector: 'weather',
   templateUrl: 'app/weather/weather.template.html',
@@ -10,11 +12,19 @@ import { Weather } from './weather';
 export class WeatherComponent implements OnInit {
   @Input()
   sourceChanel: Chanel;
-  weather:Weather;
+  weatherValues: Promise<WeatherValue[]>;
+  createdAt;
+  loading = false;
 
   constructor(private weatherService: WeatherService) { }
 
   ngOnInit(): void {
-    this.weather = this.weatherService.getCurrentWeather(this.sourceChanel.code);
+    var self = this;
+    this.loading = true;
+    this.weatherValues = this.weatherService.getCurrentWeather(this.sourceChanel.code, this.sourceChanel.readApiKey).toPromise();
+    this.weatherValues.then(function (values) {
+      self.loading = false;
+      self.createdAt = values.length === 0 ? '' : values[0].createdAt;
+    });
   }
 }

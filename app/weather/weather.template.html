@@ -1,11 +1,12 @@
 <div class="panel panel-default">
-  <div class="panel-heading">Current weather at {{sourceChanel.name}}</div>
+  <div class="panel-heading"><h3 class="panel-title">Current weather at {{sourceChanel.name}} <small>{{createdAt|date:'y-MM-dd HH:mm'}}</small></h3></div>
   <div class="panel-body">
+    <p *ngIf="loading">Loading...</p>
     <dl class="dl-horizontal">
-      <dt>Temperature</dt>
-      <dd>{{weather.temperature}}</dd>
-      <dt>Humidity</dt>
-      <dd>{{weather.humidity}}%</dd>
+      <div *ngFor="let value of weatherValues | async">
+        <dt>{{value.name}}</dt>
+        <dd>{{value.value}}</dd>
+      </div>
     </dl>
   </div>
 </div>
