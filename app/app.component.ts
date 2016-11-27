@@ -4,7 +4,7 @@ import { Chanel } from './weather/chanel';
 @Component({
   selector: 'my-app',
   template: `
-  <weather [sourceChanel]="chanel1"></weather>
+  <weather [sourceChanel]="chanel1" [refreshInterval]="'10000'"></weather>
   `
 })
 export class AppComponent {
